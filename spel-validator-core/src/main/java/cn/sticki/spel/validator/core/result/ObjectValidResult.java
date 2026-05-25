@@ -16,23 +16,23 @@ public class ObjectValidResult {
     private final List<FieldError> errors = new ArrayList<>();
 
     public static ObjectValidResult empty() {
-        return new ObjectValidResult();
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public boolean hasError() {
-        return !errors.isEmpty();
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public boolean noneError() {
-        return errors.isEmpty();
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public List<FieldError> getErrors() {
-        return Collections.unmodifiableList(errors);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public int getErrorSize() {
-        return errors.size();
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -43,9 +43,7 @@ public class ObjectValidResult {
      * @param results 字段校验结果列表
      */
     public void addFieldResults(List<FieldValidResult> results) {
-        for (FieldValidResult result : results) {
-            this.addFieldResult(result);
-        }
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -56,14 +54,10 @@ public class ObjectValidResult {
      * @param result 字段校验结果
      */
     public void addFieldResult(FieldValidResult result) {
-        if (!result.isSuccess()) {
-            errors.add(FieldError.of(result.getFieldName(), result.getMessage()));
-        }
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public void addFieldError(List<FieldError> fieldErrorList) {
-        if (fieldErrorList != null && !fieldErrorList.isEmpty()) {
-            errors.addAll(fieldErrorList);
-        }
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 }

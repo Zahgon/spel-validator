@@ -2,7 +2,6 @@ package cn.sticki.spel.validator.constraintvalidator;
 
 import cn.sticki.spel.validator.core.SpelConstraintValidator;
 import cn.sticki.spel.validator.core.result.FieldValidResult;
-
 import java.lang.annotation.Annotation;
 import java.time.*;
 import java.time.chrono.ChronoLocalDate;
@@ -34,16 +33,13 @@ public abstract class AbstractSpelTemporalValidator<T extends Annotation> implem
         supportTypes.add(Year.class);
         supportTypes.add(YearMonth.class);
         supportTypes.add(ZonedDateTime.class);
-
         // Chronos API
         supportTypes.add(ChronoLocalDate.class);
         supportTypes.add(ChronoLocalDateTime.class);
         supportTypes.add(ChronoZonedDateTime.class);
-
         // Legacy Date API
         supportTypes.add(Date.class);
         supportTypes.add(Calendar.class);
-
         SUPPORT_TYPE = Collections.unmodifiableSet(supportTypes);
     }
 
@@ -54,12 +50,7 @@ public abstract class AbstractSpelTemporalValidator<T extends Annotation> implem
      * @return 校验结果
      */
     protected FieldValidResult isValid(Object fieldValue) {
-        // null值被认为是有效的
-        if (fieldValue == null) {
-            return FieldValidResult.success();
-        }
-
-        return FieldValidResult.of(isValidTemporal(fieldValue));
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -78,29 +69,7 @@ public abstract class AbstractSpelTemporalValidator<T extends Annotation> implem
      * @return 比较结果：负数表示temporal在now之前，0表示相等，正数表示temporal在now之后
      */
     protected int compareTemporal(Object temporal, Object now) {
-        if (temporal instanceof ChronoLocalDateTime || now instanceof ChronoLocalDateTime) {
-            return compareChronoLocalDateTime(temporal, now);
-        }
-        if (temporal instanceof ChronoZonedDateTime || now instanceof ChronoZonedDateTime) {
-            return compareChronoZonedDateTime(temporal, now);
-        }
-        if (temporal instanceof ChronoLocalDate || now instanceof ChronoLocalDate) {
-            return compareChronoLocalDate(temporal, now);
-        }
-
-        // 检查类型是否一致
-        if (temporal.getClass() != now.getClass()) {
-            throw differentTypeException(temporal, now);
-        }
-
-        if (temporal instanceof Comparable) {
-            // 因为前面已经检查了 temporal.getClass() == now.getClass()，
-            // 所以这里的 a.compareTo(b) 是类型安全的。
-            //noinspection unchecked
-            return ((Comparable<Object>) temporal).compareTo(now);
-        }
-
-        throw new IllegalArgumentException("Unsupported non-comparable temporal type: " + temporal.getClass().getName());
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     private int compareChronoLocalDateTime(Object temporal, Object now) {
@@ -131,77 +100,18 @@ public abstract class AbstractSpelTemporalValidator<T extends Annotation> implem
     }
 
     private IllegalArgumentException differentTypeException(Object temporal, Object now) {
-        return new IllegalArgumentException("Cannot compare different types: " +
-                temporal.getClass().getName() + " and " + now.getClass().getName());
+        return new IllegalArgumentException("Cannot compare different types: " + temporal.getClass().getName() + " and " + now.getClass().getName());
     }
 
     /**
      * 获取当前时间，类型与传入的时间对象相同
      */
     protected Object getNow(Object temporal) {
-        if (temporal instanceof Instant) {
-            return Instant.now();
-        }
-        if (temporal instanceof LocalDate) {
-            return LocalDate.now();
-        }
-        if (temporal instanceof LocalDateTime) {
-            return LocalDateTime.now();
-        }
-        if (temporal instanceof LocalTime) {
-            return LocalTime.now();
-        }
-        if (temporal instanceof OffsetDateTime) {
-            return OffsetDateTime.now();
-        }
-        if (temporal instanceof OffsetTime) {
-            return OffsetTime.now();
-        }
-        if (temporal instanceof ZonedDateTime) {
-            return ZonedDateTime.now();
-        }
-        if (temporal instanceof Year) {
-            return Year.now();
-        }
-        if (temporal instanceof YearMonth) {
-            return YearMonth.now();
-        }
-        if (temporal instanceof MonthDay) {
-            return MonthDay.now();
-        }
-        if (temporal instanceof Date) {
-            return new Date();
-        }
-        if (temporal instanceof Calendar) {
-            return Calendar.getInstance();
-        }
-
-        if (temporal instanceof ChronoLocalDateTime) {
-            ChronoLocalDateTime<?> chronoLocalDateTime = (ChronoLocalDateTime<?>) temporal;
-            // 必须基于真实当前时刻构造“now”，不能复用被校验值自身日期
-            return chronoLocalDateTime.toLocalDate()
-                    .getChronology()
-                    .zonedDateTime(Instant.now(), ZoneId.systemDefault())
-                    .toLocalDateTime();
-        }
-        if (temporal instanceof ChronoZonedDateTime) {
-            ChronoZonedDateTime<?> chronoZonedDateTime = (ChronoZonedDateTime<?>) temporal;
-            // 对带时区时间使用同一时区下的真实当前时刻
-            return chronoZonedDateTime.getChronology()
-                    .zonedDateTime(Instant.now(), chronoZonedDateTime.getZone());
-        }
-
-        // 对于 ChronoLocalDate 的实现类，统一使用 ISO 日期作为比较基准
-        if (temporal instanceof ChronoLocalDate) {
-            return LocalDate.now();
-        }
-
-        throw new IllegalArgumentException("Unsupported temporal type: " + temporal.getClass());
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     @Override
     public Set<Class<?>> supportType() {
-        return SUPPORT_TYPE;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
-
 }

@@ -12,7 +12,6 @@ import org.springframework.expression.BeanResolver;
 import org.springframework.expression.Expression;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
-
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -56,9 +55,7 @@ public class SpelParser {
      * 该方法由 {@link SpelValidatorBeanRegistrar} 在 ApplicationContext 注入后主动调用。
      */
     static void bindBeanResolver(@NotNull ApplicationContext applicationContext) {
-        AutowireCapableBeanFactory beanFactory = applicationContext.getAutowireCapableBeanFactory();
-        beanResolver = new BeanFactoryResolver(beanFactory);
-        log.debug("SpelParser bind bean resolver success");
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     private static StandardEvaluationContext createEvaluationContext() {
@@ -79,15 +76,7 @@ public class SpelParser {
      */
     @Nullable
     public static Object parse(@Language("spel") String expression, Object rootObject) {
-        try {
-            log.debug("======> Parse expression [{}]", expression);
-            Expression parsed = expressionCache.computeIfAbsent(expression, parser::parseExpression);
-            Object value = parsed.getValue(createEvaluationContext(), rootObject, Object.class);
-            log.debug("======> Parse result [{}]", value);
-            return value;
-        } catch (RuntimeException e) {
-            throw new SpelParserException("Parse expression error, expression [" + expression + "], message [" + e.getMessage() + "]", e);
-        }
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -102,15 +91,6 @@ public class SpelParser {
      */
     @NotNull
     public static <T> T parse(@Language("spel") String expression, Object rootObject, Class<T> requiredType) {
-        Object any = parse(expression, rootObject);
-        if (any == null) {
-            throw new SpelParserException("Expression [" + expression + "] evaluated to null, expected type [" + requiredType.getName() + "]. Please check if the SpEL expression is correct.");
-        }
-        if (!requiredType.isInstance(any)) {
-            throw new SpelParserException("Expression [" + expression + "] evaluated to type [" + any.getClass().getName() + "], expected type [" + requiredType.getName() + "]. Please check if the SpEL expression is correct.");
-        }
-        //noinspection unchecked
-        return (T) any;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
-
 }

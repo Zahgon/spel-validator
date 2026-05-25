@@ -39,3 +39,8 @@ build/
 /document/web-docs/docs/.vuepress/.cache/
 /document/web-docs/docs/.vuepress/.temp/
 /document/web-docs/docs/.vuepress/dist/
+
+.aider*
+logs/
+.commit0_scripts/
+.github/workflows/

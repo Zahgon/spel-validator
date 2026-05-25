@@ -3,7 +3,6 @@ package cn.sticki.spel.validator.constraintvalidator;
 import cn.sticki.spel.validator.constrain.SpelNull;
 import cn.sticki.spel.validator.core.SpelConstraintValidator;
 import cn.sticki.spel.validator.core.result.FieldValidResult;
-
 import java.lang.reflect.Field;
 
 /**
@@ -17,7 +16,6 @@ public class SpelNullValidator implements SpelConstraintValidator<SpelNull> {
 
     @Override
     public FieldValidResult isValid(SpelNull annotation, Object obj, Field field) throws IllegalAccessException {
-        return FieldValidResult.of(field.get(obj) == null);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
-
 }

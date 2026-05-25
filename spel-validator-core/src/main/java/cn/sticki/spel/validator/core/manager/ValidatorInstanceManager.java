@@ -4,7 +4,6 @@ import cn.sticki.spel.validator.core.SpelConstraint;
 import cn.sticki.spel.validator.core.SpelConstraintValidator;
 import cn.sticki.spel.validator.core.exception.SpelValidatorException;
 import org.jetbrains.annotations.NotNull;
-
 import java.lang.annotation.Annotation;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -29,19 +28,6 @@ public class ValidatorInstanceManager {
      */
     @NotNull
     public static SpelConstraintValidator<? extends Annotation> getInstance(@NotNull Annotation annotation) {
-        return VALIDATOR_INSTANCE_CACHE.computeIfAbsent(annotation, key -> {
-            try {
-                Class<? extends Annotation> annoClazz = annotation.annotationType();
-                SpelConstraint constraint = annoClazz.getAnnotation(SpelConstraint.class);
-                if (constraint == null) {
-                    throw new SpelValidatorException("Annotation [" + annoClazz.getName() + "] is not a Spel Constraint annotation");
-                }
-                Class<? extends SpelConstraintValidator<?>> validatorClass = constraint.validatedBy();
-                return validatorClass.getDeclaredConstructor().newInstance();
-            } catch (Exception e) {
-                throw new SpelValidatorException("Failed to create validator instance, annotation [" + annotation.annotationType().getName() + "]", e);
-            }
-        });
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
-
 }

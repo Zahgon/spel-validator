@@ -45,20 +45,6 @@ public class CalcLengthUtil {
     }
 
     public static int calcFieldSize(Object object) {
-        if (object == null) {
-            return 0;
-        }
-        if (object instanceof CharSequence) {
-            return ((CharSequence) object).length();
-        } else if (object instanceof java.util.Collection) {
-            return ((java.util.Collection<?>) object).size();
-        } else if (object instanceof java.util.Map) {
-            return ((java.util.Map<?, ?>) object).size();
-        } else if (object.getClass().isArray()) {
-            return Array.getLength(object);
-        } else {
-            return 0;
-        }
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
-
 }

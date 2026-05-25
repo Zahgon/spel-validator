@@ -2,7 +2,6 @@ package cn.sticki.spel.validator.constraintvalidator;
 
 import cn.sticki.spel.validator.constrain.SpelFuture;
 import cn.sticki.spel.validator.core.result.FieldValidResult;
-
 import java.lang.reflect.Field;
 
 /**
@@ -16,13 +15,11 @@ public class SpelFutureValidator extends AbstractSpelTemporalValidator<SpelFutur
 
     @Override
     public FieldValidResult isValid(SpelFuture annotation, Object obj, Field field) throws IllegalAccessException {
-        Object fieldValue = field.get(obj);
-        return super.isValid(fieldValue);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     @Override
     protected boolean isValidTemporal(Object temporal) {
-        Object now = getNow(temporal);
-        return compareTemporal(temporal, now) > 0;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 }

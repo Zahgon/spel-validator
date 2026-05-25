@@ -30,6 +30,6 @@ public class FieldError {
     }
 
     public static FieldError of(String fieldName, String errorMessage) {
-        return new FieldError(fieldName, errorMessage);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 }

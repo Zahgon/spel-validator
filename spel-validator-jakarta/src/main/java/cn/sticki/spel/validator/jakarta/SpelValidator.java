@@ -24,32 +24,12 @@ public class SpelValidator implements ConstraintValidator<SpelValid, Object> {
 
     @Override
     public void initialize(SpelValid constraintAnnotation) {
-        this.spelValid = constraintAnnotation;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     @Override
     public boolean isValid(Object value, ConstraintValidatorContext context) {
-        if (value == null) {
-            return true;
-        }
-
-        // 表达式不为空且计算结果为 false，跳过校验
-        if (!spelValid.condition().isEmpty() && !SpelParser.parse(spelValid.condition(), value, Boolean.class)) {
-            log.debug("SpelValid condition is not satisfied, skip validation, condition: {}", spelValid.condition());
-            return true;
-        }
-
-        // 构建上下文
-        SpelValidContext spelValidContext = SpelValidContext.builder()
-                .locale(LocaleContextHolder.getLocale())
-                .build();
-
-        // 校验对象
-        ObjectValidResult validateObjectResult = SpelValidExecutor.validateObject(value, spelValid.spelGroups(), spelValidContext);
-
-        // 构建错误信息
-        buildConstraintViolation(validateObjectResult, context);
-        return validateObjectResult.noneError();
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -64,5 +44,4 @@ public class SpelValidator implements ConstraintValidator<SpelValid, Object> {
             context.buildConstraintViolationWithTemplate(error.getErrorMessage()).addPropertyNode(error.getFieldName()).addConstraintViolation();
         }
     }
-
 }

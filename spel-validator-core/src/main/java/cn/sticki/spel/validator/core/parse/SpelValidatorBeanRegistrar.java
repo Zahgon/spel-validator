@@ -15,7 +15,6 @@ public class SpelValidatorBeanRegistrar implements ApplicationContextAware {
 
     @Override
     public void setApplicationContext(@NotNull ApplicationContext applicationContext) {
-        SpelParser.bindBeanResolver(applicationContext);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
-
 }

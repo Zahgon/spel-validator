@@ -1,7 +1,6 @@
 package cn.sticki.spel.validator.core.util;
 
 import lombok.Getter;
-
 import java.math.BigDecimal;
 
 /**
@@ -19,9 +18,8 @@ public class NumberComparatorUtil {
 
     @Getter
     public enum CompareResult {
-        LESS_THAN(-1),
-        FINITE_VALUE(0),
-        GREATER_THAN(1);
+
+        LESS_THAN(-1), FINITE_VALUE(0), GREATER_THAN(1);
 
         private final int value;
 
@@ -30,13 +28,7 @@ public class NumberComparatorUtil {
         }
 
         public CompareResult negate() {
-            if (this == LESS_THAN) {
-                return GREATER_THAN;
-            }
-            if (this == GREATER_THAN) {
-                return LESS_THAN;
-            }
-            return FINITE_VALUE;
+            throw new UnsupportedOperationException("STUB: not implemented");
         }
     }
 
@@ -47,29 +39,7 @@ public class NumberComparatorUtil {
     public static final CompareResult GREATER_THAN = CompareResult.GREATER_THAN;
 
     public static int compare(Number number, Number value, CompareResult treatNanAs) {
-        if (number == null || value == null || treatNanAs == null) {
-            throw new IllegalArgumentException("[Number], [Value] and [TreatNanAs] must not be null.");
-        }
-        if (treatNanAs == CompareResult.FINITE_VALUE) {
-            throw new IllegalArgumentException("[TreatNanAs] must not be FINITE_VALUE.");
-        }
-        if (number.equals(value)) {
-            return 0;
-        }
-        boolean numberIsDouble = number instanceof Double || number instanceof Float;
-        boolean valueIsDouble = value instanceof Double || value instanceof Float;
-
-        if (numberIsDouble && valueIsDouble) {
-            return compare(number.doubleValue(), value.doubleValue());
-        }
-        if (numberIsDouble) {
-            return compare(number.doubleValue(), value, treatNanAs);
-        }
-        if (valueIsDouble) {
-            return compare(number, value.doubleValue(), treatNanAs);
-        }
-
-        return BigDecimalUtil.valueOf(number).compareTo(BigDecimalUtil.valueOf(value));
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     private static int compare(Double number, double value) {
@@ -106,5 +76,4 @@ public class NumberComparatorUtil {
         }
         return result;
     }
-
 }

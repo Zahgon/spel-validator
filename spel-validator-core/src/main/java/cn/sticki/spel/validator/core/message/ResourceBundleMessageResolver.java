@@ -2,7 +2,6 @@ package cn.sticki.spel.validator.core.message;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.support.ResourceBundleMessageSource;
-
 import java.util.Locale;
 
 /**
@@ -14,7 +13,8 @@ import java.util.Locale;
 @Slf4j
 public class ResourceBundleMessageResolver {
 
-    private ResourceBundleMessageResolver() {}
+    private ResourceBundleMessageResolver() {
+    }
 
     /**
      * The name of the default message bundle.
@@ -27,9 +27,7 @@ public class ResourceBundleMessageResolver {
 
     private static ResourceBundleMessageSource initMessageSource() {
         ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
-        messageSource.setBasenames(
-                DEFAULT_VALIDATION_MESSAGES
-        );
+        messageSource.setBasenames(DEFAULT_VALIDATION_MESSAGES);
         messageSource.setDefaultEncoding("UTF-8");
         return messageSource;
     }
@@ -41,11 +39,7 @@ public class ResourceBundleMessageResolver {
      * 在同一 JVM 内会影响所有调用方（包括并发请求和其它测试用例）。
      */
     public static void resetBasenames() {
-        synchronized (WRITE_LOCK) {
-            MESSAGE_SOURCE.setBasenames(
-                    DEFAULT_VALIDATION_MESSAGES
-            );
-        }
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -57,22 +51,10 @@ public class ResourceBundleMessageResolver {
      * @param basename 资源包名称
      */
     public static void addBasenames(String... basename) {
-        synchronized (WRITE_LOCK) {
-            String[] existingBasename = MESSAGE_SOURCE.getBasenameSet().toArray(new String[0]);
-
-            // 创建一个新的 basename 数组，将新添加的放在前面
-            String[] combinedBasename = new String[basename.length + existingBasename.length];
-            System.arraycopy(basename, 0, combinedBasename, 0, basename.length);
-            System.arraycopy(existingBasename, 0, combinedBasename, basename.length, existingBasename.length);
-            log.debug("Combined basename: {}", (Object) combinedBasename);
-
-            // 重新设置 basename
-            MESSAGE_SOURCE.setBasenames(combinedBasename);
-        }
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public static String getMessage(String key, Locale locale, Object... args) {
-        return MESSAGE_SOURCE.getMessage(key, args, locale);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
-
 }

@@ -3,7 +3,6 @@ package cn.sticki.spel.validator.core;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-
 import java.util.Locale;
 
 /**
@@ -22,11 +21,10 @@ public class SpelValidContext {
     private static final SpelValidContext DEFAULT = SpelValidContext.builder().build();
 
     public static SpelValidContext getDefault() {
-        return DEFAULT;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     public Locale getLocale() {
-        return locale == null ? Locale.getDefault() : locale;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
-
 }

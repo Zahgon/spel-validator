@@ -12,7 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.intellij.lang.annotations.Language;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -56,7 +55,7 @@ public class SpelValidExecutor {
      */
     @NotNull
     public static ObjectValidResult validateObject(@NotNull Object verifiedObject) {
-        return validateObject(verifiedObject, (String[]) null);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -64,7 +63,7 @@ public class SpelValidExecutor {
      */
     @NotNull
     public static ObjectValidResult validateObject(@NotNull Object verifiedObject, String... groups) {
-        return validateObject(verifiedObject, groups, null);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -79,9 +78,7 @@ public class SpelValidExecutor {
      */
     @NotNull
     public static ObjectValidResult validateObject(@NotNull Object verifiedObject, String[] groups, SpelValidContext context) {
-        groups = groups == null ? new String[0] : groups;
-        context = context == null ? SpelValidContext.getDefault() : context;
-        return validateObject(verifiedObject, parseGroups(verifiedObject, groups), context);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -96,35 +93,7 @@ public class SpelValidExecutor {
      */
     @NotNull
     public static ObjectValidResult validateObject(@NotNull Object verifiedObject, @NotNull Set<Object> validateGroups, @NotNull SpelValidContext context) {
-        Objects.requireNonNull(verifiedObject);
-        Objects.requireNonNull(validateGroups);
-        Objects.requireNonNull(context);
-
-        long startTime = System.nanoTime();
-        log.debug("Spel validate start, class [{}], groups [{}], context [{}]", verifiedObject.getClass().getName(), validateGroups, context);
-        log.debug("Verified object [{}]", verifiedObject);
-
-        ObjectValidResult validResult = new ObjectValidResult();
-
-        // 获取字段
-        List<Field> spelConstraintFields = getSpelConstraintFields(verifiedObject.getClass());
-        for (Field field : spelConstraintFields) {
-            // 获取注解
-            List<Annotation> spelConstraintAnnotations = getSpelConstraintAnnotations(field);
-            for (Annotation annotation : spelConstraintAnnotations) {
-                // 获取验证器实例
-                SpelConstraintValidator<? extends Annotation> validator = ValidatorInstanceManager.getInstance(annotation);
-                // 执行校验
-                FieldValidResult validationResult = validateFieldAnnotation(annotation, validator, verifiedObject, field, validateGroups, context);
-                if (validationResult != null) {
-                    validResult.addFieldResult(validationResult);
-                }
-            }
-        }
-
-        log.debug("Spel validate over,error list {}", validResult.getErrors());
-        log.debug("Spel validate cost time {} ms", (System.nanoTime() - startTime) / 1000000);
-        return validResult;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -160,7 +129,6 @@ public class SpelValidExecutor {
         return FIELD_ANNOTATION_CACHE.computeIfAbsent(field, f -> {
             Annotation[] annotations = f.getAnnotations();
             List<Annotation> tempList = new ArrayList<>();
-
             for (Annotation originalAnno : annotations) {
                 String annoName = originalAnno.annotationType().getName();
                 if (annoName.endsWith("$List") || annoName.endsWith("Container")) {
@@ -173,10 +141,8 @@ public class SpelValidExecutor {
                     tempList.add(originalAnno);
                 }
             }
-
             // 验证注解的合法性，移除不合法的注解
             tempList.removeIf(annotation -> !isSpelConstraintAnnotation(annotation.annotationType()));
-
             return Collections.unmodifiableList(tempList);
         });
     }
@@ -190,17 +156,10 @@ public class SpelValidExecutor {
      * @param validateGroups 分组信息
      * @return 校验结果
      */
-    private static @Nullable FieldValidResult validateFieldAnnotation(
-            @NotNull Annotation annotation,
-            @NotNull SpelConstraintValidator<? extends Annotation> validator,
-            @NotNull Object verifiedObject,
-            @NotNull Field verifiedField,
-            @NotNull Set<Object> validateGroups,
-            @NotNull SpelValidContext context
-    ) {
+    @Nullable
+    private static FieldValidResult validateFieldAnnotation(@NotNull Annotation annotation, @NotNull SpelConstraintValidator<? extends Annotation> validator, @NotNull Object verifiedObject, @NotNull Field verifiedField, @NotNull Set<Object> validateGroups, @NotNull SpelValidContext context) {
         log.debug("===> Find target annotation [{}], verifiedField [{}]", annotation.annotationType().getSimpleName(), verifiedField.getName());
         log.debug("===> Annotation object [{}]", annotation);
-
         // 判断字段的类型是否受支持
         Set<Class<?>> supported = validator.supportType();
         Class<?> verifiedFieldClass = verifiedField.getType();
@@ -208,21 +167,19 @@ public class SpelValidExecutor {
             log.error("===> Object type not supported, skip validate. Current type[{}], supported types [{}]", verifiedFieldClass, supported);
             throw new SpelNotSupportedTypeException(verifiedFieldClass, supported);
         }
-
         // 匹配分组
         Set<Object> annoGroups = parseGroups(verifiedObject, getAnnotationValue(annotation, GROUP));
         if (!matchGroup(validateGroups, annoGroups)) {
             log.debug("===> Group not matched, skip validate. annotation groups [{}]", annoGroups);
             return null;
         }
-
         // 判断condition条件是否成立
-        @Language("spel") String condition = getAnnotationValue(annotation, CONDITION);
+        @Language("spel")
+        String condition = getAnnotationValue(annotation, CONDITION);
         if (!condition.isEmpty() && !SpelParser.parse(condition, verifiedObject, Boolean.class)) {
             log.debug("===> Condition not valid, skip validate. condition [{}]", condition);
             return null;
         }
-
         // 执行校验
         FieldValidResult validationResult = doValidate(validator, annotation, verifiedObject, verifiedField);
         fillValidResult(validationResult, annotation, verifiedField, context.getLocale());
@@ -239,23 +196,16 @@ public class SpelValidExecutor {
      * @param verifiedField  被校验的字段，必须存在于被校验的对象中
      */
     @NotNull
-    private static <A extends Annotation> FieldValidResult doValidate(
-            @NotNull SpelConstraintValidator<?> validator,
-            @NotNull A annotation,
-            @NotNull Object verifiedObject,
-            @NotNull Field verifiedField
-    ) {
+    private static <A extends Annotation> FieldValidResult doValidate(@NotNull SpelConstraintValidator<?> validator, @NotNull A annotation, @NotNull Object verifiedObject, @NotNull Field verifiedField) {
         try {
             // noinspection unchecked
             return ((SpelConstraintValidator<A>) validator).isValid(annotation, verifiedObject, verifiedField);
         } catch (SpelValidatorException e) {
-            log.error("Spel validate error: {}; Located in the annotation [{}] of class [{}] field [{}]",
-                    e.getMessage(), annotation.annotationType().getName(), verifiedObject.getClass().getName(), verifiedField.getName());
+            log.error("Spel validate error: {}; Located in the annotation [{}] of class [{}] field [{}]", e.getMessage(), annotation.annotationType().getName(), verifiedObject.getClass().getName(), verifiedField.getName());
             throw e;
         } catch (IllegalAccessException e) {
             // 被验证的字段在类中无法访问
-            log.error("The validated field [{}] is not accessible in the class [{}]",
-                    verifiedField.getName(), verifiedObject.getClass().getName());
+            log.error("The validated field [{}] is not accessible in the class [{}]", verifiedField.getName(), verifiedObject.getClass().getName());
             throw new SpelValidatorException("Failed to access field value", e);
         }
     }
@@ -267,22 +217,18 @@ public class SpelValidExecutor {
         if (!annotationType.isAnnotationPresent(SpelConstraint.class)) {
             return false;
         }
-
         if (AnnotationMethodManager.get(annotationType, MESSAGE) == null) {
             log.warn("The annotation [{}] must have a method named [message] that returns a string.", annotationType.getName());
             return false;
         }
-
         if (AnnotationMethodManager.get(annotationType, CONDITION) == null) {
             log.warn("The annotation [{}] must have a method named [condition] that returns a string.", annotationType.getName());
             return false;
         }
-
         if (AnnotationMethodManager.get(annotationType, GROUP) == null) {
             log.warn("The annotation [{}] must have a method named [group] that returns a Array<String>.", annotationType.getName());
             return false;
         }
-
         return true;
     }
 
@@ -308,13 +254,7 @@ public class SpelValidExecutor {
      */
     @NotNull
     public static Set<Object> parseGroups(@NotNull Object object, @NotNull String... groups) {
-        Objects.requireNonNull(object);
-        Objects.requireNonNull(groups);
-        Set<Object> parsedGroups = new HashSet<>();
-        for (@Language("spel") String group : groups) {
-            parsedGroups.add(SpelParser.parse(group, object));
-        }
-        return parsedGroups;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     /**
@@ -350,5 +290,4 @@ public class SpelValidExecutor {
             throw new SpelValidatorException("Get method [" + annotation.annotationType().getName() + "." + methodName + "] error: " + e.getMessage(), e);
         }
     }
-
 }

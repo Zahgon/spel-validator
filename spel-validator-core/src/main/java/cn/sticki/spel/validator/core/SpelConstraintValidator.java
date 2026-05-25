@@ -1,7 +1,6 @@
 package cn.sticki.spel.validator.core;
 
 import cn.sticki.spel.validator.core.result.FieldValidResult;
-
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.Collections;
@@ -40,7 +39,6 @@ public interface SpelConstraintValidator<A extends Annotation> {
      * @return 支持的对象类型列表
      */
     default Set<Class<?>> supportType() {
-        return DEFAULT_SUPPORT_TYPE;
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
-
 }

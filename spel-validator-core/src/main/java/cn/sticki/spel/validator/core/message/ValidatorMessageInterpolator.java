@@ -1,7 +1,6 @@
 package cn.sticki.spel.validator.core.message;
 
 import lombok.extern.slf4j.Slf4j;
-
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -22,24 +21,21 @@ public class ValidatorMessageInterpolator {
     private static final Pattern SLASH = Pattern.compile("\\\\", Pattern.LITERAL);
 
     // private static final Pattern DOLLAR = Pattern.compile("\\$", Pattern.LITERAL);
-
     /**
      * 解析消息中的key，并从资源包中获取对应的多语言消息
      *
      * @return the interpolated message.
      */
     public String interpolate(String message, Locale locale, Object... args) {
-        return interpolateMessage(message, locale, args);
+        throw new UnsupportedOperationException("STUB: not implemented");
     }
 
     private String interpolateMessage(String message, Locale locale, Object... args) {
         if (message.indexOf('{') < 0) {
             return replaceEscapedLiterals(message);
         }
-
         String resolvedMessage = resolveMessage(message, locale, args);
         resolvedMessage = replaceEscapedLiterals(resolvedMessage);
-
         return resolvedMessage;
     }
 
@@ -63,5 +59,4 @@ public class ValidatorMessageInterpolator {
         }
         return resolvedMessage;
     }
-
 }
